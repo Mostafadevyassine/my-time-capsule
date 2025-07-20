@@ -10,6 +10,7 @@ use App\Http\Controllers\Common\AuthController;
 use App\Http\Controllers\CapsuleController;
 
 Route::get('/capsules', [CapsuleController::class, 'index']);
+Route::get('/getCapsuleById', [CapsuleController::class, 'getCapsuleById']);
 
 Route::post('/register', action: [AuthController::class, 'register']);
 Route::post( '/login', [AuthController::class, 'login']);

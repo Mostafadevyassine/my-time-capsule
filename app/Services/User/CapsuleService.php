@@ -57,6 +57,12 @@ class CapsuleService
     }
 
 
+
+    static public function getCapsuleById($user_id){
+        return Capsule::find($user_id);
+    }
+
+
     static public function createCapsule(Request $request)
 {
     $validated = $request->validate([
@@ -96,6 +102,7 @@ class CapsuleService
 
     
 }
+
 
 
 
