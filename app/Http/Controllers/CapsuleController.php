@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\StorecapsuleRequest;
 use App\Http\Requests\UpdatecapsuleRequest;
-use App\Models\capsule;
+use App\Models\Capsule;
 use App\Services\User\CapsuleService;
 
 class CapsuleController extends Controller
@@ -44,6 +44,13 @@ class CapsuleController extends Controller
         $user_id = $request->user_id;
         $capsules = CapsuleService::getUserWallCapsules($user_id);
         return $this->responseJSON($capsules);
+    }
+
+
+    public function createCapsule(Request $request)
+    {
+        $result = CapsuleService::createCapsule($request);
+        return $this->responseJSON($result);
     }
 
 

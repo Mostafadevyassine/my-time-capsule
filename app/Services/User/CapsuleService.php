@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Services\User;
+use Illuminate\Http\Request;
+use Stevebauman\Location\Facades\Location;
 
 use Carbon\Carbon;
 
-use App\Models\capsule;
+use App\Models\Capsule;
 
 class CapsuleService
 {
@@ -49,6 +51,47 @@ class CapsuleService
             })
             ->get();
     }
+
+
+    static public function createCapsule(Request $request)
+{
+    $validated = $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'message' => 'required|string',
+        'reveal_date' => 'required|date',
+        'mood' => 'nullable|in:happy,sad,Excited,Angry,Lonely,Tired,Bored,Calm',
+        'privacy' => 'required|in:public,private',
+        'is_surprise' => 'required|boolean',
+        'file' => 'nullable|file|mimetypes:image/jpeg,image/png,image/gif,video/mp4,audio/mpeg,audio/wav|max:20480',
+    ]);
+
+    //$ip = $request->ip(); // will be used really and work fine when deployment , now in local host it is returning null 
+    $ip = '8.8.8.8';
+    $position = Location::get($ip);
+    $country = $position ? $position->countryName : null;
+
+    $fileName = null;
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+        $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('capsules', $fileName, 'private');
+    }
+
+    $capsule = new Capsule();
+    $capsule->user_id = $validated['user_id'];
+    $capsule->message = $validated['message'];
+    $capsule->reveal_date = $validated['reveal_date'];
+    $capsule->country = $country;
+    $capsule->mood = $validated['mood'] ?? null;
+    $capsule->privacy = $validated['privacy'];
+    $capsule->is_surprise = $validated['is_surprise'];
+    $capsule->file_name = $fileName;
+    $capsule->save();
+
+    return $capsule;
+
+    
+}
 
 
 

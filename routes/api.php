@@ -18,3 +18,5 @@ Route::get('/getAllCapsules', action: [CapsuleController::class, 'getAllCapsules
 Route::get('/getPublicWallCapsules', [CapsuleController::class, 'getPublicWallCapsules']);
 
 Route::get('/getUserWallCapsules', [CapsuleController::class, 'getUserWallCapsules']);
+
+Route::post('/create_capsule', [CapsuleController::class, 'createCapsule']);
