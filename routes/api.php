@@ -16,3 +16,5 @@ Route::post( '/login', [AuthController::class, 'login']);
 
 Route::get('/getAllCapsules', action: [CapsuleController::class, 'getAllCapsules']);
 Route::get('/getPublicWallCapsules', [CapsuleController::class, 'getPublicWallCapsules']);
+
+Route::get('/getUserWallCapsules', [CapsuleController::class, 'getUserWallCapsules']);

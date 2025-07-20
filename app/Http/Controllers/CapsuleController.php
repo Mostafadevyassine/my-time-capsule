@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 use App\Http\Requests\StorecapsuleRequest;
 use App\Http\Requests\UpdatecapsuleRequest;
 use App\Models\capsule;
-use  App\Services\User\CapsuleService;
+use App\Services\User\CapsuleService;
 
 class CapsuleController extends Controller
 
@@ -24,6 +26,15 @@ class CapsuleController extends Controller
         $capsules = CapsuleService::getPublicWallCapsules();
         return $this->responseJSON($capsules);
     }
+
+
+    public function getUserWallCapsules(Request $request) {
+        $user_id = $request->user_id;
+        $capsules = CapsuleService::getUserWallCapsules($user_id);
+        return $this->responseJSON($capsules);
+    }
+
+
 
 
 
