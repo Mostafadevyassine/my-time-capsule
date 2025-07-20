@@ -11,5 +11,8 @@ use App\Http\Controllers\CapsuleController;
 
 Route::get('/capsules', [CapsuleController::class, 'index']);
 
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', action: [AuthController::class, 'register']);
 Route::post( '/login', [AuthController::class, 'login']);
+
+Route::get('/getAllCapsules', action: [CapsuleController::class, 'getAllCapsules']);
+Route::get('/getPublicWallCapsules', [CapsuleController::class, 'getPublicWallCapsules']);

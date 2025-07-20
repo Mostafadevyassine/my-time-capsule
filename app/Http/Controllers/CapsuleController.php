@@ -5,12 +5,32 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorecapsuleRequest;
 use App\Http\Requests\UpdatecapsuleRequest;
 use App\Models\capsule;
+use  App\Services\User\CapsuleService;
 
 class CapsuleController extends Controller
+
 {
+
+
+    public function getAllCapsules(){
+        $capsules = CapsuleService::getAllCapsules();
+        return $this->responseJSON($capsules);
+    }
     /**
      * Display a listing of the resource.
      */
+
+    public function getPublicWallCapsules(){
+        $capsules = CapsuleService::getPublicWallCapsules();
+        return $this->responseJSON($capsules);
+    }
+
+
+
+
+
+
+
     public function index()
     {
         $capsules = Capsule::all();
