@@ -22,8 +22,20 @@ class CapsuleController extends Controller
      * Display a listing of the resource.
      */
 
-    public function getPublicWallCapsules(){
-        $capsules = CapsuleService::getPublicWallCapsules();
+    // public function getPublicWallCapsules(){
+    //     $capsules = CapsuleService::getPublicWallCapsules();
+    //     return $this->responseJSON($capsules);
+    // }
+
+
+
+    public function getPublicWallCapsules(Request $request) {
+        $mood = $request->mood;
+        $country = $request->country;
+        $sort = $request->sort ?? 'asc';
+    
+        $capsules = CapsuleService::getPublicWallCapsules($mood, $country, $sort);
+    
         return $this->responseJSON($capsules);
     }
 

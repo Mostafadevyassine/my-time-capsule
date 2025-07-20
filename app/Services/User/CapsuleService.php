@@ -13,11 +13,32 @@ class CapsuleService
     }
 
 
-    static function getPublicWallCapsules(){
-        return Capsule::where('reveal_date','<=', now())
-            ->where('privacy', 'public')
-            ->get();
+    // static function getPublicWallCapsules(){
+    //     return Capsule::where('reveal_date','<=', now())
+    //         ->where('privacy', 'public')
+    //         ->get();
+    // }
+
+    static function getPublicWallCapsules($mood = null, $country = null, $sort = 'asc') {
+        $query = Capsule::where('reveal_date', '<=', now())
+            ->where('privacy', 'public');
+    
+        if ($mood) {
+            $query->where('mood', $mood);
+        }
+    
+        if ($country) {
+            $query->where('country', $country);
+        }
+    
+        $query->orderBy('reveal_date', $sort);
+    
+        return $query->get();
     }
+
+
+
+
 
 
     static function getUserWallCapsules($user_id) {
