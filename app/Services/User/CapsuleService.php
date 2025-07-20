@@ -58,8 +58,8 @@ class CapsuleService
 
 
 
-    static public function getCapsuleById($user_id){
-        return Capsule::find($user_id);
+    static public function getCapsuleById( $capsule){
+        return Capsule::find( $capsule);
     }
 
 
