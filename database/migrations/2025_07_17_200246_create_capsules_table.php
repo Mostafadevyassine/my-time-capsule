@@ -20,21 +20,10 @@ return new class extends Migration
             $table->enum('mood',['happy','sad','Excited','Angry','Lonely','Tired','Bored','Calm'])->nullable();
             $table->enum('privacy',['public','private']);
             $table->boolean('is_surprise')->default(false);
-            $table->boolean('is_revealed')->default(false)->unique();
+            $table->boolean('is_revealed')->default(false);
+            $table->string('file_name')->nullable();
             $table->timestamps();
         });
-
-
-        Schema::create('attachements', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('capsule_id')->references('id')->on('capsules')->onDelete('cascade');
-            $table->string('file_name');
-            $table->timestamps();
-        });
-
-
-
-
     }
 
     /**
@@ -43,7 +32,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('capsules');
-        Schema::dropIfExists('attachements');
 
     }
 };

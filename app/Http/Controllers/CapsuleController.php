@@ -13,6 +13,12 @@ class CapsuleController extends Controller
      */
     public function index()
     {
+        $capsules = Capsule::all();
+
+        return response()->json([
+            'status' => 200,
+            'capsules' => $capsules
+        ]);
         //
     }
 
