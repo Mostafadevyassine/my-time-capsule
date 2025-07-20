@@ -21,7 +21,11 @@ class CapsuleService
     //         ->get();
     // }
 
-    static function getPublicWallCapsules($mood = null, $country = null, $sort = 'asc') {
+    static function getPublicWallCapsules(Request $request) {
+        $mood = $request->mood;
+        $country = $request->country;
+        $sort = $request->sort ?? 'asc';
+    
         $query = Capsule::where('reveal_date', '<=', now())
             ->where('privacy', 'public');
     

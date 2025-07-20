@@ -30,12 +30,8 @@ class CapsuleController extends Controller
 
 
     public function getPublicWallCapsules(Request $request) {
-        $mood = $request->mood;
-        $country = $request->country;
-        $sort = $request->sort ?? 'asc';
-    
-        $capsules = CapsuleService::getPublicWallCapsules($mood, $country, $sort);
-    
+        // Pass the whole request object or just the needed data to the service
+        $capsules = CapsuleService::getPublicWallCapsules($request);
         return $this->responseJSON($capsules);
     }
 
