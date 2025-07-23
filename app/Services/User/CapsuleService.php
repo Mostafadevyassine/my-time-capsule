@@ -3,7 +3,7 @@
 namespace App\Services\User;
 use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
-
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 use App\Models\Capsule;
@@ -72,7 +72,7 @@ class CapsuleService
         'mood' => 'nullable|in:happy,sad,Excited,Angry,Lonely,Tired,Bored,Calm',
         'privacy' => 'required|in:public,private',
         'is_surprise' => 'required|boolean',
-        'file' => 'nullable|file|mimetypes:image/jpeg,image/png,image/gif,video/mp4,audio/mpeg,audio/wav|max:20480',
+        'file' => 'nullable|string',
     ]);
 
     //$ip = $request->ip(); // will be used really and work fine when deployment , now in local host it is returning null 
@@ -80,12 +80,39 @@ class CapsuleService
     $position = Location::get($ip);
     $country = $position ? $position->countryName : null;
 
+    // $fileName = null;
+    // if ($request->hasFile('file')) {
+    //     $file = $request->file('file');
+    //     $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+    //     $file->storeAs('capsules', $fileName, 'private');
+    // }
     $fileName = null;
-    if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('capsules', $fileName, 'private');
+    if (!empty($validated['file'])) {
+        // Extract base64 string (remove data URI scheme if present)
+        $base64Image = $validated['file'];
+
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+            $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
+            $extension = strtolower($type[1]); // jpg, png, gif, etc
+        } else {
+            // If no mime type, default to png
+            $extension = 'png';
+        }
+
+        $base64Image = str_replace(' ', '+', $base64Image);
+        $imageData = base64_decode($base64Image);
+
+        if ($imageData === false) {
+            return response()->json(['status' => 'error', 'message' => 'Invalid base64 image data'], 400);
+        }
+
+        $fileName = uniqid() . '.' . $extension;
+        $filePath = "capsules/$fileName";
+
+        // Save file to storage/app/public/capsules
+        Storage::disk('public')->put($filePath, $imageData);
     }
+
 
     $capsule = new Capsule();
     $capsule->user_id = $validated['user_id'];
