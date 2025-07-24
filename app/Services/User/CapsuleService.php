@@ -15,11 +15,15 @@ class CapsuleService
     }
 
 
+
+
     // static function getPublicWallCapsules(){
     //     return Capsule::where('reveal_date','<=', now())
     //         ->where('privacy', 'public')
     //         ->get();
     // }
+
+
 
     static function getPublicWallCapsules(Request $request) {
         $mood = $request->mood;
@@ -46,7 +50,6 @@ class CapsuleService
 
 
 
-
     static function getUserWallCapsules($user_id) {
         return Capsule::where('user_id', $user_id)
             ->where(function ($query) {
@@ -55,6 +58,9 @@ class CapsuleService
             })
             ->get();
     }
+
+
+
 
 
 
@@ -86,16 +92,16 @@ class CapsuleService
     //     $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
     //     $file->storeAs('capsules', $fileName, 'private');
     // }
+    
     $fileName = null;
     if (!empty($validated['file'])) {
-        // Extract base64 string (remove data URI scheme if present)
+        // to get the base 64 
         $base64Image = $validated['file'];
 
         if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
             $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
-            $extension = strtolower($type[1]); // jpg, png, gif, etc
+            $extension = strtolower($type[1]); 
         } else {
-            // If no mime type, default to png
             $extension = 'png';
         }
 
@@ -109,9 +115,10 @@ class CapsuleService
         $fileName = uniqid() . '.' . $extension;
         $filePath = "capsules/$fileName";
 
-        // Save file to storage/app/public/capsules
+        // to sav a file in :  storage/app/public/capsules
         Storage::disk('public')->put($filePath, $imageData);
     }
+
 
 
     $capsule = new Capsule();
@@ -126,47 +133,7 @@ class CapsuleService
     $capsule->save();
 
     return $capsule;
-
-    
 }
 
-
-
-
-
-
-
-
-    // static function autoRevealCapsules()
-    // {
-    //     $now = Carbon::now();
-
-    //     $capsules = Capsule::where('is_revealed', 0)
-    //         ->where('reveal_date', '<=', $now)
-    //         ->get();
-
-    //     foreach ($capsules as $capsule) {
-    //         $capsule->is_revealed = true;
-    //         $capsule->save(); // will trigger 'updated' model event
-    //     }
-
-    //     return $capsules->count(); // return how many were revealed
-    // }
-    
-
-
-
-
-
-
-
-
-
-    /**
-     * Create a new class instance.
-     */
-    // public function __construct()
-    // {
-    //     //
-    // }
+   
 }

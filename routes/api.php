@@ -4,9 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Common\AuthController;
 
-//Route::get('/user', function (Request $request) {
-//    return $request->user();
-//})->middleware('auth:sanctum');
+
 use App\Http\Controllers\CapsuleController;
 
 Route::group(['middleware' => 'auth:api'], function () {
